@@ -1,0 +1,37 @@
+
+#scrolled {
+    transition: background-color 0.5s ease-in-out;
+    background-color: black;
+}
+@keyframes scaleDown {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.5);
+  }
+}
+
+.scaling {
+  animation: scaleDown 1s forwards;
+  transform-origin: bottom left;
+}
+
+#info {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+}
+
+.overlay-content {
+  pointer-events: auto; 
+}

@@ -1,0 +1,19 @@
+.container {
+    padding: 20px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .movie-grid,
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+    list-style: none; /* Ensure no list-style is applied */
+  }
+  
+  
