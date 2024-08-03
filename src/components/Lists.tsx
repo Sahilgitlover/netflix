@@ -150,7 +150,7 @@
 
 
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Movie } from "@/models/Movies";
 import "./listitem.css";
 import { useRouter } from "next/navigation";
@@ -215,6 +215,17 @@ const Lists: React.FC<{
       setIsMuted(!isMuted);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      // Clean up video element
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.removeAttribute('src'); // Empty source
+        videoRef.current.load();
+      }
+    };
+  }, []);
 
   return (
     <div>

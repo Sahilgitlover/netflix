@@ -165,7 +165,8 @@ import Movies, { Movie } from "@/models/Movies";
 async function getData() {
   try {
     await dbConnect();
-    const res = await fetch("http://localhost:3000/api/getRandom12Movies",{next: {revalidate: 180}});
+    // const res = await fetch("http://localhost:3000/api/getRandom12Movies",{next: {revalidate: 180}});
+    const res = await fetch("http://localhost:3000/api/getRandom12Movies");
     const data = await res.json();
     return data.movie;
   } catch (error) {

@@ -71,8 +71,14 @@ const Page: React.FC<props> = ({ movieArray, randomMovie }) => {
   };
 
   useEffect(() => {
-
-  },[isMuted])
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.removeAttribute('src'); // Empty source
+        videoRef.current.load();
+      }
+    };
+  }, []);
 
   const handleMuteUnmute = () => {
     if (videoRef.current) {
