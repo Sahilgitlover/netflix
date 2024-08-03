@@ -6,23 +6,23 @@ import axios from "axios";
 interface ContainerProps {
   m: Movie;
 }
-const deleteHandler = async(m:Movie) => {
-    if(!m) return;
+const deleteHandler = async (m: Movie) => {
+  if (!m) return;
 
-    try {
-        const movieId = String(m._id); 
+  try {
+    const movieId = String(m._id);
 
-        const query = new URLSearchParams({
-            id: movieId,
-        }).toString();
+    const query = new URLSearchParams({
+      id: movieId,
+    }).toString();
 
-        console.log(query);
+    console.log(query);
 
-        await axios.delete(`/api/movies/deleteMovies?${query}`);
-        console.log("Movie deleted successfully");
-    } catch (error:any) {
-        console.log("Error", error.message);
-    }
+    await axios.delete(`/api/movies/deleteMovies?${query}`);
+    console.log("Movie deleted successfully");
+  } catch (error: any) {
+    console.log("Error", error.message);
+  }
 };
 
 const ListItem: React.FC<ContainerProps> = ({ m }) => {

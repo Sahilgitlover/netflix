@@ -165,7 +165,7 @@ import Movies, { Movie } from "@/models/Movies";
 async function getData() {
   try {
     await dbConnect();
-    const res = await fetch("http://localhost:3000/api/getRandom12Movies");
+    const res = await fetch("http://localhost:3000/api/getRandom12Movies",{next: {revalidate: 180}});
     const data = await res.json();
     return data.movie;
   } catch (error) {
@@ -176,7 +176,7 @@ async function getData() {
 
 const page = async() => {
   const data:Movie[] = await getData();
-  const randomValue = Math.random() * 12;
+  const randomValue = Math.floor(Math.random() * 12);  
 
   return (
     <div>
