@@ -7,6 +7,7 @@ import dbConnect from "@/lib/dbConnect";
 import Movies, { Movie } from "@/models/Movies";
 
 async function getData() {
+
   try {
     await dbConnect();
     // const res = await fetch("http://localhost:3000/api/getRandom12Movies",{next: {revalidate: 180}});

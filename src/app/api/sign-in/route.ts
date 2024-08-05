@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs";
+import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -33,7 +34,12 @@ export async function POST(request: Request) {
       );
     }
 
-    sessionStorage.setItem('user', existingUser._id as string);
+    const oneDay = 24 * 60 * 60 * 1000
+    cookies().set('id', String(existingUser._id), { expires: Date.now() + oneDay })
+    const cookieStore = cookies()
+    const theme = cookieStore.get('id')
+    console.log('id' ,theme);
+      
 
     return new Response(
       JSON.stringify(

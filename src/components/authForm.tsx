@@ -42,7 +42,7 @@ const AuthForm:React.FC<stateOfProp> = ({ isSignUp }) => {
         title: 'Success',
         description: response.data.message,
       })
-      router.replace(isSignUp ? `/verify/${response.data.id}` : `/dashboard`);
+      router.replace(isSignUp ? `/verify/${response.data.id}` : `/browse`);
     } catch (error) {
       console.error("Error during authentication:", error);
       const axiosError = error as AxiosError<ApiResponse>;
