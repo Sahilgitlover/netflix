@@ -1,49 +1,54 @@
-
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaPlay } from "react-icons/fa6";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { IoVolumeHighOutline } from "react-icons/io5";
 import { LuVolumeX } from "react-icons/lu";
 import "../app/browse/browsing.css";
 import { useRouter } from "next/navigation";
-import InfoSection from "@/components/InfoSection";
 import MainNavbar from "@/components/MainNavbar";
 import { Movie } from "@/models/Movies";
-import List from "@/components/List";
 
-interface props {
-  movieArray: Movie[];
+interface Props {
+  hoveredMovieId: boolean;
   randomMovie: Movie;
+  isMuted: boolean;
+  setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const Page: React.FC<props> = ({ movieArray, randomMovie }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
+
+const Page: React.FC<Props> = ({
+  hoveredMovieId,
+  randomMovie,
+  isMuted,
+  setIsMuted,
+}) => {
   const [isReadyToPlay, setIsReadyToPlay] = useState(false);
   const [trailerToShow, setTrailerToShow] = useState("");
   const [movieTitle, setMovieTitle] = useState("");
   const [isScaled, setIsScaled] = useState(false);
   const [firstVideo, setFirstVideo] = useState("");
   const [movieImage, setMovieImage] = useState("");
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const router = useRouter();
 
-  const [info, setInfo] = useState(false);
-  const [res, setRes] = useState<Movie | null>(null);
-
   function handleInfoSection() {
-    setInfo(true);
+    router.push(`/info?movie=${randomMovie._id}`);
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReadyToPlay(true);
-      if (videoRef.current) {
-        videoRef.current.play().catch((error) => {
-          console.error("Error attempting to play the video:", error);
-        });
-      }
-    }, 3000);
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+      videoRef.current.play().catch((error) => {
+        console.error("Error attempting to play video:", error);
+      });
+    }
+  }, [isMuted, isReadyToPlay]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsScaled(true);
+      setIsReadyToPlay(true);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -52,13 +57,10 @@ const Page: React.FC<props> = ({ movieArray, randomMovie }) => {
     setTrailerToShow(randomMovie.trailer);
     setMovieTitle(randomMovie.imgTitle);
     setFirstVideo(randomMovie.videos[1]);
-    setRes(randomMovie);
   }, [randomMovie]);
 
   function startTimer() {
-    setTimeout(() => {
-      setIsScaled(true);
-    }, 3000);
+    setIsReadyToPlay(false);
   }
 
   const handlePlayPause = () => {
@@ -70,42 +72,27 @@ const Page: React.FC<props> = ({ movieArray, randomMovie }) => {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.removeAttribute('src'); // Empty source
-        videoRef.current.load();
-      }
-    };
-  }, []);
-
   const handleMuteUnmute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(!isMuted);
-    }
+    setIsMuted(!isMuted);
   };
 
   return (
     <div className="relative w-screen h-screen m-0 p-0 will-change-scroll overflow-x-hidden">
-      <div className={info ? "info" : ""}>
+      <div>
         <MainNavbar />
         <div className="relative w-screen h-screen">
-          {!isReadyToPlay || info ? (
+          {!isReadyToPlay || hoveredMovieId ? (
             <img src={movieImage} className="w-screen h-screen object-cover" />
           ) : (
             <video
+              src={trailerToShow}
               ref={videoRef}
+              muted={isMuted}
+              onEnded={startTimer}
               className="w-screen h-screen object-cover"
-              controls={false}
               autoPlay
-              muted
-              preload="none"
-              onCanPlay={startTimer}
-            >
-              <source src={trailerToShow} type="video/mp4" />
-            </video>
+              playsInline
+            />
           )}
           <div className="absolute inset-0 bg-custom-gradient2"></div>
 
@@ -143,20 +130,6 @@ const Page: React.FC<props> = ({ movieArray, randomMovie }) => {
             </div>
           </div>
         </div>
-      </div>
-      {info && res && (
-        <div className={`info-overlay ${info ? "active" : ""}`}>
-          <InfoSection
-            isMuted={isMuted}
-            setIsMuted={setIsMuted}
-            info={info}
-            setInfo={setInfo}
-            response={res}
-          />
-        </div>
-      )}
-      <div className="mt-10 ">
-        <List movieArray={movieArray} isMuted = {isMuted} setIsMuted={setIsMuted} />
       </div>
     </div>
   );

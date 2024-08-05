@@ -33,6 +33,7 @@
   border-radius: 5px;
   background-color: black;
 }
+
 .list-item-img {
   width: 100%;
   height: 100%;
@@ -126,4 +127,19 @@
     transform: scale(1);
   }
 }
-
+/* h-screen w-[900px] fixed top-0 left-[300px] z-50 transition-all duration-1000 */
+.animation-class {
+  position: fixed;
+  top: 0;
+  left: 300px;
+  animation-name: example;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  transform-origin: center ;
+  z-index: 100;
+}
+@keyframes example {
+  from {width: 100px;
+  height: 100px}
+  to {width: 500px;height:100vh;}
+}

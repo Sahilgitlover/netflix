@@ -1,0 +1,8 @@
+.apply-hover {
+    position: absolute;
+    top: -50px;
+    height: 345px;
+    width: 345px;
+    z-index: 10;
+    transition: width 2s, height 2s;
+}
