@@ -49,5 +49,9 @@ export const config = {
     "/createMovie/updateMovie",
     "/createProfile",
     "/SelectProfile",
+    "/handlePayment",
+    "/browse/movies",
+    "/browse/series",
+    "/browse/new",
   ],
 };

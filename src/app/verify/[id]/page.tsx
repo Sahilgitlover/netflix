@@ -14,7 +14,7 @@ import '@/components/loader.css'
 
 function VerifyAccount() {
   const router = useRouter();
-  const params = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();  
   const { toast } = useToast();
   const {
     register,
@@ -25,7 +25,7 @@ function VerifyAccount() {
   });
 
   const changeToSignIn = () => {
-    router.push("/sign-in");
+    router.push("sign-in");
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ function VerifyAccount() {
         title: "Success",
         description: response.data.message,
       });
-      router.push("/sign-in");
+      router.push(`/handlePayment?id=${params.id}`);
     } catch (error) {
       console.error("Error during verification:", error);
 

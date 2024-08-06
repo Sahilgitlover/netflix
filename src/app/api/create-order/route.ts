@@ -1,29 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import Razorpay from "razorpay";
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+import dbConnect from "@/lib/dbConnect";
+import UserModel, { User } from "@/models/User";
 
 export async function POST(request: NextRequest) {
   try {
-    const order = await razorpay.orders.create({
-      amount: 100 * 100,
-      currency: "INR",
-      receipt: "receipt_" + Math.random().toString(36).substring(7),
-    });
+    await dbConnect();
+
+    const { userId } = await request.json(); // Assuming you're sending userId in the request body
+
+    const dateOfBuying = new Date();
+    const dateOfExpiring = new Date(dateOfBuying);
+    dateOfExpiring.setMonth(dateOfExpiring.getMonth() + 1);
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    user.dateOfBuying = dateOfBuying;
+    user.dateOfExpiring = dateOfExpiring;
+
+    await user.save();
 
     return NextResponse.json(
       {
-        orderId: order.id,
+        success: true,
+        message: "User updated successfully",
+        user: {
+          dateOfBuying: user.dateOfBuying,
+          dateOfExpiring: user.dateOfExpiring,
+        },
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log("Error creating order: ", error);
+    console.error("Error updating user:", error);
     return NextResponse.json(
-      { error: "Error creating order" },
+      { success: false, message: "Error updating user" },
       { status: 500 }
     );
   }

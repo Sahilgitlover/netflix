@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Script from 'next/script'
+import { useParams, useRouter } from 'next/navigation';
 
 declare global {
     interface Window {
@@ -8,24 +9,26 @@ declare global {
     }
 }
 const page = () => {
+    const params = useParams<{ id: string }>();
     const AMOUNT = 100;
     const [isProcessing, setIsProcessing] = useState(false)
+    const router = useRouter()
     const handlePayment = async() => {
         setIsProcessing(true)
         try {
-            const response = await fetch("/api/create-order",{method: "POST"})
+            const response = await fetch(`/api/create-order?id=${params.id}`,{method: "POST"})
             const data = await response.json()
 
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                 amount: AMOUNT * 100,
                 currency: "INR",
-                order_id: data.id,
                 name: "Netflix",
                 description: "Subscription",
                 order_id: data.orderId,
                 handler : function(response:any) {
                     console.log("Payment successful", response);
+                    router.push("/sign-in");
                     // handle successful response
                 },
                 prefill: {
