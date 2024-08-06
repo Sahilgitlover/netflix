@@ -79,7 +79,7 @@ const Page: React.FC<Props> = ({
   return (
     <div className="relative w-screen h-screen m-0 p-0 will-change-scroll overflow-x-hidden">
       <div>
-        <MainNavbar />
+        
         <div className="relative w-screen h-screen">
           {!isReadyToPlay || hoveredMovieId ? (
             <img src={movieImage} className="w-screen h-screen object-cover" />

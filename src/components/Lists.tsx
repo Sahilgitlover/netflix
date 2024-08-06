@@ -8,6 +8,7 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { IoVolumeHighOutline } from "react-icons/io5";
 import { LuVolumeX } from "react-icons/lu";
 import VideoDuration from "./VideoDuration";
+import axios from "axios";
 
 const Lists: React.FC<{
   movie: Movie;
@@ -60,7 +61,16 @@ const Lists: React.FC<{
 
   const createdAtDate = new Date((movie as any).createdAt);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
+    try {
+      const profileLogin = sessionStorage.getItem("name");
+      const res = await axios.post("/api/updateWatchHistory", {
+        profileLogin: profileLogin,
+        movieId: movie._id,
+      });
+    } catch (error) {
+      console.error("Error fetching movie:", error);
+    }
     if (movie.videos[1]) {
       const video = movie.videos[1].split("upload/")[1];
       router.push(`/watch?trackId=${video}`);

@@ -3,6 +3,7 @@ import { Movie } from "@/models/Movies";
 import React, { useRef, useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import Lists from "@/components/Lists";
+import axios from "axios";
 
 const List: React.FC<{
   movieArray: Movie[];
@@ -10,12 +11,14 @@ const List: React.FC<{
   setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
   setHoveredMovieId: React.Dispatch<React.SetStateAction<boolean>>;
   hoveredMovieId: boolean;
+  text: string
 }> = ({
   movieArray,
   isMuted,
   setIsMuted,
   setHoveredMovieId,
   hoveredMovieId,
+  text
 }) => {
   const [isMoved, setIsMoved] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
@@ -26,6 +29,8 @@ const List: React.FC<{
   const divRefRight = useRef<HTMLDivElement>(null);
   const divRefLeft = useRef<HTMLDivElement>(null);
   const size = movieArray.length;
+
+ 
 
   useEffect(() => {
     const logScreenWidth = () => {
@@ -74,7 +79,7 @@ const List: React.FC<{
   return (
     <div className="relative">
       <div className="relative w-screen h-[225px] flex flex-col mb-12">
-        <h1 className="text-2xl">Your next watch</h1>
+        <h1 className="text-2xl">{text}</h1>
         <div
           ref={listRef}
           className="h-[128px] w-full flex ml-[60px] transition-transform duration-300 ease-in-out "

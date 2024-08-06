@@ -45,9 +45,10 @@ const Page = () => {
     getData();
   }, []);
 
-  const handleClickHandler = async (imageKey: ImageKey) => {
+  const handleClickHandler =  (name: string, avatar: string) => {
     // set cookies and redirect to browse and handle the watchHistory route and also manage profiles button
-    sessionStorage.setItem("profile", imageKey);
+    sessionStorage.setItem("name", name);
+    sessionStorage.setItem("avatar", avatar);
     router.push("/browse");
   };
 
@@ -77,7 +78,7 @@ const Page = () => {
                       layout="fill"
                       objectFit="cover"
                       className="rounded-lg hover:border-4 hover:border-blue-500"
-                      onClick={() => handleClickHandler(p.avatar as ImageKey)}
+                      onClick={() => handleClickHandler(p.name,imageMap[p.avatar])}
                     />
                   </div>
                   <div className="text-center">{p.name}</div>
