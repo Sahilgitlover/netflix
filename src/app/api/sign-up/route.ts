@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       password: hashedPassword,
       verifyCode: verifyCodeOtp,
       verifyCodeExpiry: expiryDate,
+      profiles: [],
     });
 
     await newUser.save();
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
       JSON.stringify({
         success: true,
         message: "User registered successfully. Please verify your email",
-        id: newUser._id
+        id: newUser._id,
       }),
       { status: 200 }
     );

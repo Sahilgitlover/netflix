@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import Browsing from "@/components/Browsing";
 import Parent from "@/components/Parent";

@@ -1,7 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-// import ProfileSchema from "./Profile"
-const cloudinaryUrl =
-  "https://res.cloudinary.com/dpexuin43/image/upload/uualmq690hkn2ch4zkyk.jpg";
 
 export interface Profile extends Document {
   name: string;
@@ -12,13 +9,14 @@ export interface Profile extends Document {
 const ProfileSchema: Schema<Profile> = new Schema({
   name: {
     type: String,
-    required: [true, "Profile name is required"],
-    default: "Profile1",
+    // required: [true, "Profile name is required"],
+    // default: "Profile1",
+    // unique: true,
   },
   avatar: {
     type: String,
-    required: [true, "Avatar field is required"],
-    default: cloudinaryUrl, // Default avatar image URL
+    // required: [true, "Avatar field is required"],
+    // default: 'abcd', // Default avatar image URL
   },
   watchHistory: {
     type: [String], // Assuming watch history is an array of strings, adjust as needed
