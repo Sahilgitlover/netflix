@@ -16,18 +16,17 @@ export async function sendVerificationEmail(
         const res = await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
-            subject: 'Verifation email',
+            subject: 'Verification email',
             text: `Hello user, please use the following code to verify your email: ${verifyCode}`,
             react: EmailTemplate({firstName:"user",verifyCode:verifyCode}),
         })
 
         console.log(res);
-        
-        
+
         return {success:true,message:"Verification emails send successfully"}
 
     } catch (emailError) {
-        console.error("Error sending verifiction email",error);
+        console.error("Error sending verifiction email",emailError);
         return {success:false,message:"Failed to send verification emails"}
     }
 }

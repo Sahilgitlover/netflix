@@ -19,9 +19,10 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
+    console.log(process.env.RESEND_API_KEY,email,password);
+    
     const existingUser = await UserModel.findOne({ email });
-
+    
     if (existingUser) {
       return new Response(
         JSON.stringify({ success: false, message: "Email already exists" }),
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
     });
 
     await newUser.save();
-
+    
     const emailResponse = await sendVerificationEmail(email, verifyCodeOtp);
 
     if (!emailResponse.success) {
