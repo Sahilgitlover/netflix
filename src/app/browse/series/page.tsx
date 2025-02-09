@@ -3,7 +3,7 @@ import List from "@/components/List";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const SeriesPage = () => {
   const [hoveredMovieId, setHoveredMovieId] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [movies, setMovies] = useState([]);
@@ -35,4 +35,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SeriesPage;

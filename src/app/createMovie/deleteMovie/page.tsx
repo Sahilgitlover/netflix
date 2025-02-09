@@ -1,12 +1,13 @@
 "use client";
+import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Container from "@/components/Contanier";
 import { Movie } from "@/models/Movies";
 
-const Page = () => {
+// This component contains all logic that uses Next.js hooks like useSearchParams.
+const PageContent = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -16,14 +17,16 @@ const Page = () => {
     searchParams.get("query")?.toString() || ""
   );
 
-  // Use debounced callback
+  // Use a debounced callback for handling search input changes
   const handleSearch = useDebouncedCallback(async (value: string) => {
+    // Create new URLSearchParams from the current searchParams
     const params = new URLSearchParams(searchParams);
     if (value) {
       params.set("query", value);
     } else {
       params.delete("query");
     }
+    // Update the URL with the new query string
     router.replace(`${pathname}?${params.toString()}`);
 
     if (!value) {
@@ -40,6 +43,7 @@ const Page = () => {
     }
   }, 400);
 
+  // Trigger search when the input value changes
   useEffect(() => {
     handleSearch(inputValue);
   }, [inputValue]);
@@ -48,10 +52,12 @@ const Page = () => {
     setInputValue(e.target.value);
   };
 
+  // Optional: a click handler if you want to update inputValue based on a selection
   const handleClick = (title: string) => {
-    setInputValue(title); // Set the input field value to the clicked title
+    setInputValue(title);
   };
 
+  // Handler for submitting the search (if needed)
   const submitHandler = async () => {
     if (!searchParams.get("query")) return;
     const value = searchParams.get("query")?.toString();
@@ -79,11 +85,20 @@ const Page = () => {
         </div>
       </div>
       {results.length > 0 && (
-          <div>
-            <Container results={results} />
-          </div>
-        )}
+        <div>
+          <Container results={results} />
+        </div>
+      )}
     </div>
+  );
+};
+
+// Wrap the content component in a Suspense boundary with a fallback.
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
+    </Suspense>
   );
 };
 

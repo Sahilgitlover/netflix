@@ -1,13 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import InfoSection from "@/components/InfoSection";
 import { useSearchParams } from "next/navigation";
-import Movies, { Movie } from "@/models/Movies";
+import { Movie } from "@/models/Movies";
 import axios from "axios";
 
-const Page = () => {
-  const params = useSearchParams();
-  const movie = params.get("movie");
+// Component that uses useSearchParams and fetches data
+const PageContent = () => {
+  const searchParams = useSearchParams();
+  const movie = searchParams.get("movie");
   const [res, setRes] = useState<Movie | null>(null);
 
   useEffect(() => {
@@ -29,6 +30,15 @@ const Page = () => {
     <div>
       {res ? <InfoSection response={res} /> : <div>Loading...</div>}
     </div>
+  );
+};
+
+// Wrap the component in a Suspense boundary with a fallback
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading page...</div>}>
+      <PageContent />
+    </Suspense>
   );
 };
 

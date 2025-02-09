@@ -10,6 +10,7 @@ export async function GET  () {
         }
         return new Response(JSON.stringify({ success: true, movie: movie }));
       } catch (error) {
+        console.error("hello");
         console.error("Error fetching movie:", error);
         return new Response(JSON.stringify({ success: false, message: "Error fetching movie" }), { status: 500 });
       }

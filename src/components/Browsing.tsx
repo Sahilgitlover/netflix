@@ -16,7 +16,7 @@ interface Props {
   setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Page: React.FC<Props> = ({
+const VideosPage: React.FC<Props> = ({
   hoveredMovieId,
   randomMovie,
   isMuted,
@@ -135,4 +135,4 @@ const Page: React.FC<Props> = ({
   );
 };
 
-export default Page;
+export default VideosPage;

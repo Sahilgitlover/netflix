@@ -1,38 +1,13 @@
 "use client";
-import List from "@/components/List";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { Suspense } from "react";
+import MoviesPageContent from "./MoviesPageContent"; // Your MoviesPage logic split out
 
-const page = () => {
-  const [hoveredMovieId, setHoveredMovieId] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    async function getMovies() {
-      try {
-        const res = await axios.get("/api/getMoviesForMovieRoute?Series=false");
-        
-        setMovies(res.data.movie);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    }
-    getMovies();
-  }, []);
-
+const MoviesPage = () => {
   return (
-    <div className=" w-screen h-screen mt-24">
-      <List
-        text={"Movies"}
-        movieArray={movies}
-        isMuted={isMuted}
-        setIsMuted={setIsMuted}
-        setHoveredMovieId={setHoveredMovieId}
-        hoveredMovieId={hoveredMovieId}
-      />
-    </div>
+    <Suspense fallback={<div>Loading movies...</div>}>
+      <MoviesPageContent />
+    </Suspense>
   );
 };
 
-export default page;
+export default MoviesPage;

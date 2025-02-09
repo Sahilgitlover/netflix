@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import "../../components/navbar.css"
 
 const imageMap: Record<string, string> = {
   red: "/Red1.png",
@@ -47,13 +48,17 @@ const Page = () => {
 
   const handleClickHandler =  (name: string, avatar: string) => {
     // set cookies and redirect to browse and handle the watchHistory route and also manage profiles button
+    setLoading(true)
     sessionStorage.setItem("name", name);
     sessionStorage.setItem("avatar", avatar);
-    router.push("/browse");
+    router.replace("/browse");
+    setLoading(false)
   };
 
   const createHandler = () => {
-    router.push("/createProfile");
+    setLoading(true)
+    router.replace("/createProfile");
+    setLoading(false)
   };
 
   return (
@@ -97,26 +102,6 @@ const Page = () => {
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .loader {
-          border: 8px solid #f3f3f3;
-          border-top: 8px solid #3498db;
-          border-radius: 50%;
-          width: 50px;
-          height: 50px;
-          animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 };

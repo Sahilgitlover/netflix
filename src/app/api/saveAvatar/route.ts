@@ -1,11 +1,14 @@
+
 // import dbConnect from "@/lib/dbConnect";
 // import UserModel from "@/models/User";
 // import { cookies } from "next/headers";
+// import { string } from "zod";
 
 // export async function POST(request: Request) {
 //   await dbConnect();
 //   try {
-//     const { name, selectedImage } = await request.json();
+//     const { name, selectedImage }: { name: string; selectedImage: string } =
+//       await request.json();
 //     const cookieStore = cookies();
 //     const hasCookie = cookieStore.get("id");
 
@@ -16,8 +19,6 @@
 //       );
 //     }
 
-//     console.log(name,selectedImage,hasCookie);
-
 //     const user = await UserModel.findById(hasCookie?.value);
 //     if (!user) {
 //       return new Response(
@@ -26,7 +27,6 @@
 //       );
 //     }
 
-//     // Check if the user already has a profile with the same name
 //     const existingProfile = user.profiles.find(
 //       (profile) => profile.name === name
 //     );
@@ -39,23 +39,18 @@
 //         { status: 400 }
 //       );
 //     }
-
-//     const newProfile = new (UserModel as any).prototype.constructor({
+//     const newProfile = {
 //       name,
 //       avatar: selectedImage,
-//       watchHistory: [], // Include default value for watchHistory
-//     });
+//       watchHistory: [],
+//     };
 
 //     user.profiles.push(newProfile);
 
-//     await user.save(); // Save changes to the user document
+//     await user.save();
 
 //     return new Response(
-//       JSON.stringify({
-//         success: true,
-//         message: "Profile saved successfully",
-//         user: user.profiles,
-//       }),
+//       JSON.stringify({ success: true, message: "Profile saved successfully" }),
 //       { status: 200 }
 //     );
 //   } catch (error) {
@@ -69,7 +64,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import { cookies } from "next/headers";
-import { string } from "zod";
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -86,7 +80,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await UserModel.findById(hasCookie?.value);
+    const user = await UserModel.findById(hasCookie.value);
     if (!user) {
       return new Response(
         JSON.stringify({ success: false, message: "User not found" }),
@@ -106,13 +100,15 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    
     const newProfile = {
       name,
       avatar: selectedImage,
       watchHistory: [],
     };
 
-    user.profiles.push(newProfile);
+    // Cast newProfile to `any` to bypass type checking
+    user.profiles.push(newProfile as any);
 
     await user.save();
 

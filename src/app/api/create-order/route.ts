@@ -2,17 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import UserModel, { User } from "@/models/User";
 
+
 export async function POST(request: NextRequest) {
   try {
     await dbConnect();
+    const userId = request.nextUrl.searchParams.get("id");
 
-    const { userId } = await request.json(); // Assuming you're sending userId in the request body
+    // const { userId } = await request.json(); // Assuming you're sending userId in the request body
 
+    // console.log(userId);
+    
     const dateOfBuying = new Date();
     const dateOfExpiring = new Date(dateOfBuying);
     dateOfExpiring.setMonth(dateOfExpiring.getMonth() + 1);
 
     const user = await UserModel.findById(userId);
+
+    console.log(user);
+    
 
     if (!user) {
       return NextResponse.json(

@@ -4,15 +4,20 @@ import netflixImage from "../../public/netflixWhite-removebg-preview (1).png";
 import { useRouter } from "next/navigation";
 interface NavbarProps {
   signUp: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Navbar: React.FC<NavbarProps> = ({ signUp }) => {
+const Navbar: React.FC<NavbarProps> = ({ signUp,setLoading }) => {
   const router = useRouter();
   const changeToSignIn = () => {
+    setLoading(true)
     router.push("/sign-in");
+    setLoading(false)
   };
   const changeToSignUp = () => {
+    setLoading(true)
     router.push("/sign-up");
+    setLoading(false)
   };
   return (
     <div className="mt-5 ">

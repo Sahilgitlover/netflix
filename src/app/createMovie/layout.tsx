@@ -4,7 +4,7 @@ import React from 'react'
 
 
 
-const layout:React.FC<{children:React.ReactNode}> = ({children}) => {
+const CreateMovieLayout:React.FC<{children:React.ReactNode}> = ({children}) => {
 
     const router = useRouter()
     const onCreate = () => {   
@@ -32,4 +32,4 @@ const layout:React.FC<{children:React.ReactNode}> = ({children}) => {
   )
 }
 
-export default layout
+export default CreateMovieLayout

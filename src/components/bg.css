@@ -59,8 +59,8 @@ label {
     pointer-events: none;
 }
 
-input:focus + label,
-input:not(:placeholder-shown) + label {
+input:not(:placeholder-shown) + label,
+input:focus + label {
     top: 1px;
     left: 15px;
     font-size: 12px;
